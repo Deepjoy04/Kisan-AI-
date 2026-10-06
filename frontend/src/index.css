@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-kisan-dark text-white font-body;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { @apply font-display; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-kisan-gold text-kisan-dark font-semibold px-6 py-3 rounded-full
+           hover:bg-yellow-400 transition-all duration-300 hover:scale-105
+           active:scale-95 shadow-lg shadow-yellow-900/30;
+  }
+  .btn-outline {
+    @apply border border-kisan-green-light text-kisan-green-light px-6 py-3 rounded-full
+           hover:bg-kisan-green-light hover:text-white transition-all duration-300;
+  }
+  .card-glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+  }
+  .section-heading {
+    @apply font-display text-4xl font-bold text-white mb-4;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: #0d2b18; }
+::-webkit-scrollbar-thumb { background: #2d7a45; border-radius: 3px; }
+
+/* Particle seeds animation */
+.seed-particle {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  background: #4aab67;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0;
+  animation: seedFall linear infinite;
+}

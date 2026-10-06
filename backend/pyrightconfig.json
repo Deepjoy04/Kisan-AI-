@@ -1,0 +1,11 @@
+{
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "pythonVersion": "3.14"
+    }
+  ],
+  "pythonPlatform": "Darwin",
+  "extraPaths": ["."],
+  "reportMissingImports": "warning"
+}

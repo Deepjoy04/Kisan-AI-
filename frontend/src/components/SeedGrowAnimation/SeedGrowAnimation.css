@@ -1,0 +1,215 @@
+/* SeedGrowAnimation.css */
+
+.seed-grow-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+  /* Entire loop fades out at 20s */
+  animation: fadeOutContainer 22s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seed-grow-container {
+    display: none;
+  }
+}
+
+@keyframes fadeOutContainer {
+  0%, 85% { opacity: 1; }
+  90%, 100% { opacity: 0; }
+}
+
+.tree-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.tree-root {
+  /* Translate root to bottom-left corner */
+  transform: translate(80px, calc(100% - 20px));
+}
+
+/* Phase 1: Seed Falling */
+.seed-wrapper {
+  animation: seedDropBounce 2.2s forwards;
+  will-change: transform;
+}
+@keyframes seedDropBounce {
+  0% { transform: translateY(-150vh) rotate(0deg); opacity: 1; }
+  85% { transform: translateY(0) rotate(360deg); opacity: 1; }
+  88% { transform: translateY(-20px) rotate(380deg); opacity: 1; }
+  91% { transform: translateY(0) rotate(390deg); opacity: 1; }
+  94% { transform: translateY(-5px) rotate(395deg); opacity: 1; }
+  97% { transform: translateY(0) rotate(400deg); opacity: 1; }
+  100% { transform: translateY(0) rotate(400deg); opacity: 0; }
+}
+
+/* Dust puff on landing */
+.dust-puff {
+  fill: rgba(139, 94, 60, 0.4);
+  opacity: 0;
+  animation: dustPuffAnim 1s 1.8s forwards;
+  will-change: transform, opacity;
+}
+@keyframes dustPuffAnim {
+  0% { opacity: 0; transform: scale(0.2) translateY(-10px); }
+  20% { opacity: 1; transform: scale(1.5) translateY(-20px); }
+  100% { opacity: 0; transform: scale(3) translateY(-40px); }
+}
+
+/* Phase 2: Cracking and Sprout */
+.seed-left, .seed-right {
+  opacity: 0;
+}
+.seed-left { animation: crackLeft 1s 2.2s forwards; will-change: transform, opacity; }
+.seed-right { animation: crackRight 1s 2.2s forwards; will-change: transform, opacity; }
+
+@keyframes crackLeft {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  20% { opacity: 1; transform: translate(-8px, 0) rotate(-30deg); }
+  100% { opacity: 0; transform: translate(-15px, 0) rotate(-60deg); }
+}
+@keyframes crackRight {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  20% { opacity: 1; transform: translate(8px, 0) rotate(30deg); }
+  100% { opacity: 0; transform: translate(15px, 0) rotate(60deg); }
+}
+
+.sprout {
+  transform: scaleY(0);
+  transform-origin: 0 0;
+  animation: sproutGrow 2.5s 2.2s forwards;
+  will-change: transform, opacity;
+}
+@keyframes sproutGrow {
+  0% { transform: scale(0); opacity: 1; }
+  20% { transform: scale(1); opacity: 1; }
+  80% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* Phase 3: Plant Growing */
+.trunk {
+  stroke: #4A2F0E;
+  stroke-dasharray: 250;
+  stroke-dashoffset: 250;
+  stroke-width: 0;
+  animation: growTrunk 2s 4s forwards;
+  will-change: stroke-dashoffset, stroke-width;
+}
+@keyframes growTrunk {
+  0% { stroke-dashoffset: 250; stroke-width: 2; }
+  100% { stroke-dashoffset: 0; stroke-width: 14; }
+}
+
+.branch {
+  stroke: #6B4423;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  stroke-width: 0;
+  animation-name: growBranch;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  will-change: stroke-dashoffset, stroke-width;
+}
+@keyframes growBranch {
+  0% { stroke-dashoffset: var(--len); stroke-width: 1; }
+  100% { stroke-dashoffset: 0; stroke-width: 6; }
+}
+
+.leaf-cluster {
+  opacity: 0;
+  transform: scale(0);
+  animation-name: popLeaf;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+}
+@keyframes popLeaf {
+  0% { opacity: 0; transform: scale(0); }
+  60% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Phase 4: Swaying */
+.tree-sway-group {
+  transform-origin: 0 0;
+  animation: treeSway 4s ease-in-out 10s infinite alternate;
+  will-change: transform;
+}
+@keyframes treeSway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(3deg); }
+}
+
+/* Flying leaves */
+.fly-leaf {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Leaf paths */
+.leaf-1 { animation: flyLeaf1 5s 11s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes flyLeaf1 {
+  0% { opacity: 0; transform: translate(-80px, -160px) rotate(0deg) scale(1.5); }
+  5% { opacity: 0.9; transform: translate(-80px, -165px) rotate(20deg) scale(1.5); }
+  100% { opacity: 0; transform: translate(520px, -210px) rotate(720deg) scale(1.5); }
+}
+
+.leaf-2 { animation: flyLeaf2 6s 12s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes flyLeaf2 {
+  0% { opacity: 0; transform: translate(100px, -200px) rotate(0deg) scale(1.8); }
+  5% { opacity: 0.9; transform: translate(100px, -205px) rotate(-10deg) scale(1.8); }
+  100% { opacity: 0; transform: translate(800px, -120px) rotate(-500deg) scale(1.8); }
+}
+
+.leaf-3 { animation: flyLeaf3 4.5s 13s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes flyLeaf3 {
+  0% { opacity: 0; transform: translate(0px, -250px) rotate(0deg) scale(1.2); }
+  5% { opacity: 0.9; transform: translate(5px, -255px) rotate(45deg) scale(1.2); }
+  100% { opacity: 0; transform: translate(550px, -350px) rotate(600deg) scale(1.2); }
+}
+
+.leaf-4 { animation: flyLeaf4 7s 11.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes flyLeaf4 {
+  0% { opacity: 0; transform: translate(-60px, -240px) rotate(0deg) scale(2); }
+  5% { opacity: 0.9; transform: translate(-50px, -245px) rotate(30deg) scale(2); }
+  100% { opacity: 0; transform: translate(740px, -210px) rotate(900deg) scale(2); }
+}
+
+.leaf-5 { animation: flyLeaf5 5.5s 14s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes flyLeaf5 {
+  0% { opacity: 0; transform: translate(70px, -260px) rotate(0deg) scale(1.6); }
+  5% { opacity: 0.9; transform: translate(75px, -265px) rotate(-20deg) scale(1.6); }
+  100% { opacity: 0; transform: translate(720px, -340px) rotate(-600deg) scale(1.6); }
+}
+
+.leaf-6 { animation: flyLeaf6 6.5s 15s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes flyLeaf6 {
+  0% { opacity: 0; transform: translate(-80px, -160px) rotate(0deg) scale(1.4); }
+  5% { opacity: 0.9; transform: translate(-70px, -170px) rotate(15deg) scale(1.4); }
+  100% { opacity: 0; transform: translate(670px, -60px) rotate(500deg) scale(1.4); }
+}
+
+.leaf-7 { animation: flyLeaf7 5s 12.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes flyLeaf7 {
+  0% { opacity: 0; transform: translate(0px, -250px) rotate(0deg) scale(1.9); }
+  5% { opacity: 0.9; transform: translate(10px, -250px) rotate(-25deg) scale(1.9); }
+  100% { opacity: 0; transform: translate(900px, -280px) rotate(-800deg) scale(1.9); }
+}
+
+.leaf-8 { animation: flyLeaf8 4s 16s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes flyLeaf8 {
+  0% { opacity: 0; transform: translate(100px, -200px) rotate(0deg) scale(1.3); }
+  5% { opacity: 0.9; transform: translate(110px, -205px) rotate(35deg) scale(1.3); }
+  100% { opacity: 0; transform: translate(700px, -140px) rotate(600deg) scale(1.3); }
+}
