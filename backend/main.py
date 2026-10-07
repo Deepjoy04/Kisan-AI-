@@ -62,6 +62,20 @@ app.include_router(weather.router, prefix="/api/weather", tags=["Weather"])
 app.include_router(auth.router,    prefix="/api/auth",    tags=["Authentication"])
 app.include_router(market.router,  prefix="/api/market",  tags=["Market Prices"])
 
+from utils.cache import CacheManager
+
 @app.get("/")
 def root():
     return {"message": "KisanAI API is running", "status": "healthy"}
+
+@app.get("/api/health", tags=["System"])
+def health_status():
+    model_path = Path(__file__).parent / "models" / "plant_disease_model_v2.keras"
+    return {
+        "status": "healthy",
+        "service": "KisanAI API",
+        "version": "1.1.0",
+        "cache": CacheManager.status(),
+        "model_file_present": model_path.exists(),
+        "database": "sqlite_ready",
+    }

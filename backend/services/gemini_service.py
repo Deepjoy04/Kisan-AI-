@@ -35,23 +35,17 @@ LANGUAGE_MAP = {
     "en": "English",
 }
 
+from utils.cache import CacheManager
+
 _GEMINI_CACHE_TTL_SECONDS = int(os.getenv("GEMINI_CACHE_TTL_SECONDS", "900"))
-_gemini_cache: dict[str, tuple[float, object]] = {}
 
 
 def _cache_get(key: str):
-    cached = _gemini_cache.get(key)
-    if not cached:
-        return None
-    expires_at, value = cached
-    if time.time() >= expires_at:
-        _gemini_cache.pop(key, None)
-        return None
-    return deepcopy(value)
+    return CacheManager.get(key)
 
 
 def _cache_set(key: str, value):
-    _gemini_cache[key] = (time.time() + _GEMINI_CACHE_TTL_SECONDS, deepcopy(value))
+    CacheManager.set(key, value, ttl_seconds=_GEMINI_CACHE_TTL_SECONDS)
 
 
 def _make_soil_cache_key(soil_data: dict) -> str:

@@ -183,9 +183,24 @@ Includes a wildcard route (`*`) with a Not Found page to avoid blank screen on u
 - Ensure `VITE_API_BASE_URL` points to the running backend
 - Confirm backend is reachable at `http://localhost:8000`
 
-## Next Recommended Improvements
+## Production Deployment with Docker Compose
 
-- Add automated tests (backend route tests + frontend integration tests)
-- Add persistent cache (Redis) for multi-instance deployments
-- Add deployment config (Docker / Compose)
-- Add monitoring and health checks for production
+You can launch the entire stack (FastAPI Backend + React Frontend + Redis Cache) in one command:
+
+```bash
+docker compose up --build
+```
+
+- **Frontend:** `http://localhost:5173`
+- **Backend API:** `http://localhost:8000`
+- **Redis Service:** `redis:6379`
+- **Health Check Endpoint:** `http://localhost:8000/api/health`
+
+## Running Automated Tests
+
+Run the backend test suite:
+
+```bash
+cd backend
+python -m unittest tests/test_api.py
+```
